@@ -21,3 +21,39 @@ resource "aws_eks_cluster" "cluster" {
     aws_iam_role_policy_attachment.eks_cluster,
   ]
 }
+
+resource "aws_eks_node_group" "node_group" {
+  cluster_name    = aws_eks_cluster.cluster.name
+  node_group_name = "${var.project_name}-node-group"
+  node_role_arn   = aws_iam_role.eks_node_group.arn
+  subnet_ids      = module.vpc.private_subnet_ids
+  version         = var.eks_cluster_version
+
+  scaling_config {
+    desired_size = 3
+    max_size     = 5
+    min_size     = 3
+  }
+
+  remote_access {
+    ec2_ssh_key = var.ec2_kepair_name
+
+    source_security_group_ids = [
+      aws_security_group.eks_remote_access.id,
+    ]
+  }
+
+  update_config {
+    max_unavailable = 1
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.node_group_AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.node_group_AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.node_group_AmazonEC2ContainerRegistryReadOnly,
+  ]
+
+  tags = {
+    "boundary" = "hosts"
+  }
+}
