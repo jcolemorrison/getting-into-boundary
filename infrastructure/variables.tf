@@ -48,3 +48,15 @@ variable "hvn_cidr_block" {
   description = "Cidr block for the HCP HVN. Cannot overlap with VPC CIDR block."
   default     = "172.25.16.0/20"
 }
+
+variable "hcp_boundary_worker_tags" {
+  type        = list(string)
+  description = "Tags to apply to the Boundary worker instance."
+  default     = ["worker"]
+}
+
+variable "hcp_boundary_worker_count" {
+  type        = number
+  description = "The number of Boundary worker instances to deploy."
+  default     = 2
+}
