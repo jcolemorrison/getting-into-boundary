@@ -66,30 +66,52 @@ resource "aws_iam_instance_profile" "boundary_worker_profile" {
 
 ## Boundary Host Plugin IAM Resources
 
-resource "aws_iam_user" "boundary" {
-  name = "boundary"
-}
-resource "aws_iam_access_key" "boundary" {
-  user = aws_iam_user.boundary.name
+# resource "aws_iam_user" "boundary" {
+#   name = "boundary"
+# }
+# resource "aws_iam_access_key" "boundary" {
+#   user = aws_iam_user.boundary.name
+# }
+
+resource "aws_iam_role" "boundary_host_plugin" {
+  name_prefix        = "boundary-host-plugin-"
+  assume_role_policy = data.aws_iam_policy_document.boundary_worker_trust_policy.json
 }
 
-resource "aws_iam_user_policy" "BoundaryDescribeInstances" {
-  name = "BoundaryDescribeInstances"
-  user = aws_iam_user.boundary.name
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "ec2:DescribeInstances"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
+# resource "aws_iam_user_policy" "BoundaryDescribeInstances" {
+#   name = "BoundaryDescribeInstances"
+#   user = aws_iam_user.boundary.name
+#   policy = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Action": [
+#         "ec2:DescribeInstances"
+#       ],
+#       "Effect": "Allow",
+#       "Resource": "*"
+#     }
+#   ]
+# }
+# EOF
+# }
+
+data "aws_iam_policy_document" "boundary_plugin_permissions_policy" {
+  statement {
+    sid    = "BoundaryHostCatalogPermissions"
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeInstances",
+    ]
+    resources = ["*"]
+  }
 }
-EOF
+
+resource "aws_iam_role_policy" "boundary_host_plugin_policy" {
+  name_prefix = "boundary-host-plugin-"
+  role        = aws_iam_role.boundary_host_plugin.id
+  policy      = data.aws_iam_policy_document.boundary_plugin_permissions_policy.json
 }
 
 # Boundary Worker Security Group
