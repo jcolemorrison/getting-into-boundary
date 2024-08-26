@@ -11,3 +11,8 @@ variable "aws_default_region" {
   description = "The default region that all resources will be deployed into."
   default     = "us-east-1"
 }
+
+variable "hcp_boundary_host_plugin_role_arn" {
+  type        = string
+  description = "ARN of the IAM role for the HCP Boundary host plugin"
+}
