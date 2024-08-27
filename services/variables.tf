@@ -1,14 +1,14 @@
 variable "project_name" {
   type        = string
   description = "The name of the project.  Used for naming resources."
-  default     = "getting-into-boundary-apps"
+  default     = "getting-into-boundary-services"
 }
 
 variable "aws_default_tags" {
   type        = map(string)
   description = "Default tags added to all AWS resources."
   default = {
-    Project = "getting-into-boundary-apps"
+    Project = "getting-into-boundary-services"
   }
 }
 
