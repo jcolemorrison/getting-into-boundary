@@ -93,8 +93,6 @@ resource "kubernetes_manifest" "deployment_ui" {
           labels = {
             app = var.ui_service_name
           }
-          annotations = {
-          }
         }
         spec = {
           containers = [
