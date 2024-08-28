@@ -5,7 +5,7 @@ resource "tls_private_key" "boundary_key" {
 }
 
 resource "tls_self_signed_cert" "boundary_cert" {
-  private_key_pem   = tls_private_key.boundary_ca_key.private_key_pem
+  private_key_pem   = tls_private_key.boundary_key.private_key_pem
   is_ca_certificate = true
 
   subject {
@@ -23,5 +23,5 @@ resource "tls_self_signed_cert" "boundary_cert" {
 
 resource "aws_acm_certificate" "boundary" {
   private_key       = tls_private_key.boundary_key.private_key_pem
-  certificate_body  = tls_locally_signed_cert.boundary_cert.cert_pem
+  certificate_body  = tls_self_signed_cert.boundary_cert.cert_pem
 }
