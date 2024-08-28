@@ -1,8 +1,11 @@
 locals {
   cidr_prefix = split("/", module.vpc.private_subnet_cidr_blocks[0])[1]
-  host_numbers = range(pow(2, 32 - local.cidr_prefix))
+  max_hosts = 1024  # Limit the number of hosts to 1024 to avoid exceeding the range limit
 
-  # all IPs within the private subnets
+  # Generate a limited range of host numbers
+  host_numbers = range(min(pow(2, 32 - tonumber(local.cidr_prefix)), local.max_hosts))
+
+  # All IPs within the private subnets, limited to the first 1024 hosts
   ip_addresses = flatten([for subnet in module.vpc.private_subnet_cidr_blocks : [for host_number in local.host_numbers : cidrhost(subnet, host_number)]])
 }
 

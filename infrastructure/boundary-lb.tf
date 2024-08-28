@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "boundary_controller" {
     enabled             = false # change after after configured
     interval            = 30
     path                = "/health"
-    protocol            = "TCP"
+    protocol            = "HTTPS"
     port                = 9203 # boundary health port
     timeout             = 5
     healthy_threshold   = 3
