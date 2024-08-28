@@ -40,3 +40,35 @@ variable "eks_cluster_version" {
   description = "The version of Kubernetes for EKS to use."
   default     = "1.29"
 }
+
+# Boundary Variables
+
+variable "boundary_controller_count" {
+  type        = number
+  description = "The number of Boundary controllers to deploy."
+  default     = 3
+}
+
+variable "boundary_db_username" {
+  type        = string
+  description = "The username for the Boundary database."
+  default     = "boundary"
+}
+
+variable "boundary_db_password" {
+  type        = string
+  description = "The password for the Boundary database."
+  sensitive   = true
+}
+
+variable "boundary_controller_enable_ssh" {
+  type        = bool
+  description = "Enable SSH access to the Boundary controllers."
+  default     = true
+}
+
+variable "boundary_controller_allowed_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR blocks allowed to SSH into the Boundary controllers."
+  default     = ["0.0.0.0/0"]
+}
