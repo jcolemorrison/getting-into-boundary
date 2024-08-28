@@ -6,7 +6,7 @@ resource "aws_instance" "boundary_controller" {
   count                       = var.boundary_controller_count
 
   ami                         = data.aws_ssm_parameter.al2023.value
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_controller.name
   key_name                    = var.ec2_kepair_name
