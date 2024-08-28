@@ -2,7 +2,7 @@
 locals {
   tags = merge(
     {
-      Module = "foundational-soa//modules/vpc",
+      Module = "getting-into-boundary//modules/vpc",
     },
   var.tags)
   public_cidr_blocks  = [for i in range(var.public_subnet_count) : cidrsubnet(var.cidr_block, 3, i)]

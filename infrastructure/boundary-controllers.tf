@@ -23,6 +23,9 @@ resource "aws_instance" "boundary_controller" {
     KMS_WORKER_AUTH_KEY_ID  = aws_kms_key.boundary_worker_auth.id
     KMS_RECOVERY_KEY_ID     = aws_kms_key.boundary_recovery.id
     KMS_ROOT_KEY_ID         = aws_kms_key.boundary_root.id
+    SERVER_CA               = tls_self_signed_cert.boundary_ca_cert.cert_pem
+    SERVER_PUBLIC_KEY       = tls_locally_signed_cert.boundary_server_signed_cert.cert_pem
+    SERVER_PRIVATE_KEY      = tls_private_key.boundary_server_key.private_key_pem
   })
 
   user_data_replace_on_change = true
