@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "boundary_controller" {
 
 resource "aws_lb_target_group_attachment" "controller" {
   count            = var.boundary_controller_count
-  target_group_arn = aws_lb_target_group.controller.arn
+  target_group_arn = aws_lb_target_group.boundary_controller.arn
   target_id        = aws_instance.boundary_controller[count.index].id
   port             = 9200
 }
