@@ -7,16 +7,12 @@ yum -y install boundary
 # Create the Boundary configuration directory
 mkdir -p /etc/boundary
 
-cat > /etc/boundary/tls/ca.crt <<- EOF
-${SERVER_CA}
+cat > /etc/boundary/tls/key.pem <<- EOF
+${SERVER_KEY}
 EOF
 
-cat > /etc/boundary/tls/tls.crt <<- EOF
-${SERVER_PUBLIC_KEY}
-EOF
-
-cat > /etc/boundary/tls/tls.key <<- EOF
-${SERVER_PRIVATE_KEY}
+cat > /etc/boundary/tls/cert.pem <<- EOF
+${SERVER_CERT}
 EOF
 
 # Adding a system user and group
