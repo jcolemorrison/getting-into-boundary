@@ -20,9 +20,9 @@ resource "aws_instance" "boundary_controller" {
     DB_USERNAME             = var.boundary_db_username
     DB_PASSWORD             = var.boundary_db_password
     DB_ENDPOINT             = aws_db_instance.boundary.endpoint
-    kms_worker_auth_key_id  = aws_kms_key.worker_auth.id
-    kms_recovery_key_id     = aws_kms_key.recovery.id
-    kms_root_key_id         = aws_kms_key.root.id
+    KMS_WORKER_AUTH_KEY_ID  = aws_kms_key.boundary_worker_auth.id
+    KMS_RECOVERY_KEY_ID     = aws_kms_key.boundary_recovery.id
+    KMS_ROOT_KEY_ID         = aws_kms_key.boundary_root.id
   })
 
   user_data_replace_on_change = true
