@@ -1,9 +1,9 @@
 locals {
-  cidr_prefix = split("/", module.vpc.private_subnets_cidr_blocks[0])[1]
+  cidr_prefix = split("/", module.vpc.private_subnet_cidr_blocks[0])[1]
   host_numbers = range(pow(2, 32 - local.cidr_prefix))
 
   # all IPs within the private subnets
-  ip_addresses = flatten([for subnet in module.vpc.private_subnets_cidr_blocks : [for host_number in local.host_numbers : cidrhost(subnet, host_number)]])
+  ip_addresses = flatten([for subnet in module.vpc.private_subnet_cidr_blocks : [for host_number in local.host_numbers : cidrhost(subnet, host_number)]])
 }
 
 # Root CA

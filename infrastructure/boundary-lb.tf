@@ -3,12 +3,12 @@ resource "aws_lb" "boundary_controller" {
   internal           = false
   load_balancer_type = "network"
   security_groups    = [aws_security_group.boundary_controller_lb.id]
-  subnets            = module.vpc.public_subnets_ids
+  subnets            = module.vpc.public_subnet_ids
   idle_timeout       = 60
 }
 
 resource "aws_lb_target_group" "boundary_controller" {
-  name_prefix          = "boundary-controller-"
+  name_prefix          = "bctl-"
   port                 = 9200
   protocol             = "TLS"
   vpc_id               = module.vpc.id
@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "boundary_controller" {
     enabled             = false # change after after configured
     interval            = 30
     path                = "/health"
-    protocol            = "TLS"
+    protocol            = "TCP"
     port                = 9203 # boundary health port
     timeout             = 5
     healthy_threshold   = 3
