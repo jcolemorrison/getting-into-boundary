@@ -10,7 +10,7 @@ resource "aws_instance" "boundary_controller" {
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_controller.name
   key_name                    = var.ec2_kepair_name
-  vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
+  vpc_security_group_ids      = [aws_security_group.boundary_controller.id]
 
   # constrain to number of private subnets
   subnet_id                   = module.vpc.private_subnet_ids[count.index % 3]

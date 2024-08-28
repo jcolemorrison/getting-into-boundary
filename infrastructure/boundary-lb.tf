@@ -1,5 +1,5 @@
 resource "aws_lb" "boundary_controller" {
-  name_prefix        = "boundary-controller-"
+  name_prefix        = "bctl-"
   internal           = false
   load_balancer_type = "network"
   security_groups    = [aws_security_group.boundary_controller_lb.id]
