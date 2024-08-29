@@ -20,8 +20,3 @@ resource "tls_self_signed_cert" "boundary_cert" {
     "server_auth",
   ]
 }
-
-# resource "aws_acm_certificate" "boundary" {
-#   private_key       = tls_private_key.boundary_key.private_key_pem
-#   certificate_body  = tls_self_signed_cert.boundary_cert.cert_pem
-# }
