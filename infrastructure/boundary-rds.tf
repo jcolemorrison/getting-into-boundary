@@ -5,18 +5,18 @@ resource "random_password" "boundary_db_password" {
 
 # Create the PostgreSQL RDS instance
 resource "aws_db_instance" "boundary" {
-  identifier              = "boundary"
-  engine                  = "postgres"
-  engine_version          = "16.4"
-  instance_class          = "db.t3.micro"
-  db_name                 = "boundary"
-  allocated_storage       = 20
-  username                = var.boundary_db_username
-  password                = random_password.boundary_db_password.result
-  db_subnet_group_name    = aws_db_subnet_group.boundary.name
-  vpc_security_group_ids  = [aws_security_group.boundary_database.id]
-  skip_final_snapshot     = true
-  storage_type            = "gp2"
+  identifier             = "boundary"
+  engine                 = "postgres"
+  engine_version         = "16.4"
+  instance_class         = "db.t3.micro"
+  db_name                = "boundary"
+  allocated_storage      = 20
+  username               = var.boundary_db_username
+  password               = random_password.boundary_db_password.result
+  db_subnet_group_name   = aws_db_subnet_group.boundary.name
+  vpc_security_group_ids = [aws_security_group.boundary_database.id]
+  skip_final_snapshot    = true
+  storage_type           = "gp2"
 
   tags = {
     Name = "boundary-db"

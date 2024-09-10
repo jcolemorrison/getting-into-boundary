@@ -3,7 +3,7 @@ data "aws_ssm_parameter" "al2023" {
 }
 
 resource "aws_instance" "boundary_controller" {
-  count                       = var.boundary_controller_count
+  count = var.boundary_controller_count
 
   ami                         = data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = false
@@ -13,19 +13,19 @@ resource "aws_instance" "boundary_controller" {
   vpc_security_group_ids      = [aws_security_group.boundary_controller.id]
 
   # constrain to number of private subnets
-  subnet_id                   = module.vpc.private_subnet_ids[count.index % 3]
+  subnet_id = module.vpc.private_subnet_ids[count.index % 3]
 
   user_data = templatefile("${path.module}/scripts/boundary-controller.sh", {
-    INDEX                   = count.index
-    DB_USERNAME             = var.boundary_db_username
-    DB_PASSWORD             = random_password.boundary_db_password.result
-    DB_ENDPOINT             = aws_db_instance.boundary.endpoint # has port included
-    DB_NAME                 = aws_db_instance.boundary.db_name
-    KMS_WORKER_AUTH_KEY_ID  = aws_kms_key.boundary_worker_auth.id
-    KMS_RECOVERY_KEY_ID     = aws_kms_key.boundary_recovery.id
-    KMS_ROOT_KEY_ID         = aws_kms_key.boundary_root.id
-    SERVER_KEY              = tls_private_key.boundary_key.private_key_pem
-    SERVER_CERT             = tls_self_signed_cert.boundary_cert.cert_pem
+    INDEX                  = count.index
+    DB_USERNAME            = var.boundary_db_username
+    DB_PASSWORD            = random_password.boundary_db_password.result
+    DB_ENDPOINT            = aws_db_instance.boundary.endpoint # has port included
+    DB_NAME                = aws_db_instance.boundary.db_name
+    KMS_WORKER_AUTH_KEY_ID = aws_kms_key.boundary_worker_auth.id
+    KMS_RECOVERY_KEY_ID    = aws_kms_key.boundary_recovery.id
+    KMS_ROOT_KEY_ID        = aws_kms_key.boundary_root.id
+    SERVER_KEY             = tls_private_key.boundary_key.private_key_pem
+    SERVER_CERT            = tls_self_signed_cert.boundary_cert.cert_pem
   })
 
   user_data_replace_on_change = true

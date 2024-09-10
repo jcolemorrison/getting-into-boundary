@@ -55,6 +55,12 @@ variable "boundary_worker_count" {
   default     = 3
 }
 
+variable "boundary_sample_target_count" {
+  type        = number
+  description = "The number of Boundary sample targets to deploy."
+  default     = 2
+}
+
 variable "boundary_db_username" {
   type        = string
   description = "The username for the Boundary database."
