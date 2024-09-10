@@ -22,7 +22,7 @@ ${SERVER_CERT}
 EOF
 
 cat > /etc/boundary.d/boundary.env <<- EOF
-BOUNDARY_DB_CONNECTION=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}
+BOUNDARY_DB_CONNECTION=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}
 EOF
 
 cat > /etc/boundary.d/boundary.hcl <<- EOF
@@ -117,7 +117,7 @@ useradd --system --user-group boundary || true
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
 
-export BOUNDARY_DB_CONNECTION="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
+export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
 
 # Run the command and capture the exit code
 boundary database init -config /etc/boundary.d/boundary.hcl
