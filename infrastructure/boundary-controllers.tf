@@ -67,13 +67,22 @@ resource "aws_security_group_rule" "allow_9201_boundary_controller" {
   security_group_id = aws_security_group.boundary_controller.id
 }
 
+resource "aws_security_group_rule" "allow_9201_boundary_workers" {
+  type                     = "ingress"
+  from_port                = 9201
+  to_port                  = 9201
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.boundary_worker.id
+  security_group_id        = aws_security_group.boundary_controller.id
+}
+
 resource "aws_security_group_rule" "allow_ssh_boundary_controller" {
-  count             = var.boundary_controller_enable_ssh ? 1 : 0
+  count             = var.boundary_admin_enable_ssh ? 1 : 0
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  cidr_blocks       = var.boundary_controller_allowed_cidr_blocks
+  cidr_blocks       = var.boundary_admin_allowed_ssh_cidr_blocks
   security_group_id = aws_security_group.boundary_controller.id
 }
 

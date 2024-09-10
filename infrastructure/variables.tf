@@ -49,6 +49,12 @@ variable "boundary_controller_count" {
   default     = 3
 }
 
+variable "boundary_worker_count" {
+  type        = number
+  description = "The number of Boundary workers to deploy."
+  default     = 3
+}
+
 variable "boundary_db_username" {
   type        = string
   description = "The username for the Boundary database."
@@ -61,14 +67,20 @@ variable "boundary_db_password" {
   sensitive   = true
 }
 
-variable "boundary_controller_enable_ssh" {
+variable "boundary_admin_enable_ssh" {
   type        = bool
   description = "Enable SSH access to the Boundary controllers."
   default     = true
 }
 
-variable "boundary_controller_allowed_cidr_blocks" {
+variable "boundary_admin_allowed_ssh_cidr_blocks" {
   type        = list(string)
-  description = "CIDR blocks allowed to SSH into the Boundary controllers."
+  description = "CIDR blocks allowed to SSH into the Boundary controllers and workers."
+  default     = ["0.0.0.0/0"]
+}
+
+variable "boundary_worker_allowed_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR blocks allowed to access the Boundary workers."
   default     = ["0.0.0.0/0"]
 }
