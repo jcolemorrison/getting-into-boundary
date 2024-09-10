@@ -18,8 +18,9 @@ resource "aws_instance" "boundary_controller" {
   user_data = templatefile("${path.module}/scripts/boundary-controller.sh", {
     INDEX                   = count.index
     DB_USERNAME             = var.boundary_db_username
-    DB_PASSWORD             = var.boundary_db_password
-    DB_ENDPOINT             = aws_db_instance.boundary.endpoint
+    DB_PASSWORD             = random_password.boundary_db_password.result
+    DB_ENDPOINT             = aws_db_instance.boundary.endpoint # has port included
+    DB_NAME                 = aws_db_instance.boundary.db_name
     KMS_WORKER_AUTH_KEY_ID  = aws_kms_key.boundary_worker_auth.id
     KMS_RECOVERY_KEY_ID     = aws_kms_key.boundary_recovery.id
     KMS_ROOT_KEY_ID         = aws_kms_key.boundary_root.id

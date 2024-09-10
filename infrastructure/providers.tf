@@ -17,3 +17,5 @@ provider "aws" {
     tags = var.aws_default_tags
   }
 }
+
+provider "random" {}

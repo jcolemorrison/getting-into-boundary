@@ -37,3 +37,8 @@ output "eks_cluster_api_endpoint" {
   value       = aws_eks_cluster.cluster.endpoint
   description = "API endpoint for the EKS cluster"
 }
+
+output "aws_rds_instance_endpoint" {
+  value       = aws_db_instance.boundary.endpoint
+  description = "Endpoint for the RDS instance"
+}

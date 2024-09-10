@@ -1,3 +1,8 @@
+resource "random_password" "boundary_db_password" {
+  length  = 16
+  special = true
+}
+
 # Create the PostgreSQL RDS instance
 resource "aws_db_instance" "boundary" {
   identifier              = "boundary"
@@ -7,7 +12,7 @@ resource "aws_db_instance" "boundary" {
   db_name                 = "boundary"
   allocated_storage       = 20
   username                = var.boundary_db_username
-  password                = var.boundary_db_password
+  password                = random_password.boundary_db_password.result
   db_subnet_group_name    = aws_db_subnet_group.boundary.name
   vpc_security_group_ids  = [aws_security_group.boundary_database.id]
   skip_final_snapshot     = true
