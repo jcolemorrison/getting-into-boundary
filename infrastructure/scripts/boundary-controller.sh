@@ -1,13 +1,16 @@
 #!/bin/bash
 
 # Install necessary packages
-yum install -y yum-utils shadow-utils
+yum install -y yum-utils shadow-utils jq
 yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 yum -y install boundary
 
 # Get token for fetching metadata and local ipv4
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 LOCAL_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/local-ipv4")
+
+# URL-encode the password
+ENCODED_DB_PASSWORD=$(echo -n "${DB_PASSWORD}" | jq -sRr @uri)
 
 # Create the Boundary configuration directory and TLS subdirectory
 mkdir -p /etc/boundary.d/tls
@@ -22,7 +25,7 @@ ${SERVER_CERT}
 EOF
 
 cat > /etc/boundary.d/boundary.env <<- EOF
-BOUNDARY_DB_CONNECTION=postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}
+BOUNDARY_DB_CONNECTION=postgresql://${DB_USERNAME}:${ENCODED_DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}
 EOF
 
 cat > /etc/boundary.d/boundary.hcl <<- EOF
@@ -117,7 +120,7 @@ useradd --system --user-group boundary || true
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
 
-export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
+export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:${ENCODED_DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
 
 # Run the command and capture the exit code
 boundary database init -config /etc/boundary.d/boundary.hcl
