@@ -64,7 +64,7 @@ resource "aws_iam_role" "boundary_worker" {
   })
 }
 
-resource "aws_iam_instance_profile" "boundary_worker" {
+resource "aws_iam_instance_profile" "boundary_worker_profile" {
   name = "${var.project_name}-boundary-worker-profile"
   role = aws_iam_role.boundary_worker.name
 }
