@@ -11,6 +11,10 @@ resource "aws_instance" "boundary_sample_target" {
   subnet_id = module.vpc.private_subnet_ids[count.index % 3]
 
   user_data_replace_on_change = true
+
+  tags = {
+    Name = "boundary-target-${count.index}"
+  }
 }
 
 resource "aws_security_group" "boundary_sample_target" {

@@ -15,6 +15,10 @@ resource "aws_instance" "boundary_worker" {
   })
 
   user_data_replace_on_change = true
+
+  tags = {
+    Name = "boundary-worker-${count.index}"
+  }
 }
 
 resource "aws_security_group" "boundary_worker" {
