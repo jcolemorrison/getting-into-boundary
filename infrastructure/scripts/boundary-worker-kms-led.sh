@@ -50,3 +50,10 @@ useradd --system --user-group boundary || true
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
+
+# Reload systemd manager configuration
+systemctl daemon-reload
+
+# Enable and start the Boundary service
+systemctl enable boundary
+systemctl start boundary
