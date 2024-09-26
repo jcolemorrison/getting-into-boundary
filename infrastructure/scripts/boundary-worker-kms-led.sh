@@ -8,6 +8,7 @@ yum -y install boundary
 # Get token for fetching metadata and local ipv4
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 LOCAL_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/local-ipv4")
+PUBLIC_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/public-ipv4")
 
 mkdir -p /etc/boundary.d
 
@@ -21,7 +22,7 @@ listener "tcp" {
 }
 
 worker {
-  public_addr = "$${PUBLIC_IP}"
+  public_addr = "$${PUBLIC_IPV4}"
 
   # Name attr must be unique across workers
   name = "kms-worker"
