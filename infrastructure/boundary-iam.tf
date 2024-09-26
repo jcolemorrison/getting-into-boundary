@@ -81,10 +81,10 @@ resource "aws_iam_role_policy" "boundary_worker_kms_auth" {
     "Action": [
       "kms:DescribeKey",
       "kms:Decrypt",
-      "kms:Encrypt",
+      "kms:Encrypt"
     ],
     "Resource": [
-      "${aws_kms_key.boundary_worker_auth.arn}",
+      "${aws_kms_key.boundary_worker_auth.arn}"
     ]
   }
 }

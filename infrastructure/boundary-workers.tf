@@ -35,7 +35,7 @@ resource "aws_instance" "boundary_worker_kms_led" {
   subnet_id = module.vpc.public_subnet_ids[1]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-kms-led.sh", {
-    CONTROLLER_ADDRESSES = aws_instance.boundary_controller[*].private_ip
+    CONTROLLER_ADDRESSES = jsonencode(aws_instance.boundary_controller[*].private_ip)
     KMS_WORKER_AUTH_KEY_ID = aws_kms_key.boundary_worker_auth.id
   })
 
