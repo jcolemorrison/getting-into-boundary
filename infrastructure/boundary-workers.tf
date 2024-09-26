@@ -1,5 +1,6 @@
-resource "aws_instance" "boundary_worker" {
-  count = var.boundary_worker_count
+# Worker that uses controller led authorization
+resource "aws_instance" "boundary_worker_ctrl_led" {
+  # count = var.boundary_worker_count
 
   ami                         = data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = true
@@ -9,15 +10,60 @@ resource "aws_instance" "boundary_worker" {
   vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
 
   # constrain to number of public subnets
-  subnet_id = module.vpc.public_subnet_ids[count.index % 3]
+  subnet_id = module.vpc.public_subnet_ids[0]
 
-  user_data = templatefile("${path.module}/scripts/boundary-worker.sh", {
+  user_data = templatefile("${path.module}/scripts/boundary-worker-ctrl-led.sh", {
   })
 
   user_data_replace_on_change = true
 
   tags = {
-    Name = "boundary-worker-${count.index}"
+    Name = "boundary-worker-ctrl-led-${count.index}"
+  }
+}
+
+# Worker that uses KMS led authorization
+resource "aws_instance" "boundary_worker_kms_led" {
+  ami                         = data.aws_ssm_parameter.al2023.value
+  associate_public_ip_address = true
+  instance_type               = "t3.micro"
+  iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
+  key_name                    = var.ec2_kepair_name
+  vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
+
+  # constrain to number of public subnets
+  subnet_id = module.vpc.public_subnet_ids[1]
+
+  user_data = templatefile("${path.module}/scripts/boundary-worker-kms-led.sh", {
+    CONTROLLER_ADDRESSES = aws_instance.boundary_controller[*].private_ip
+  })
+
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "boundary-worker-kms-led-${count.index}"
+  }
+}
+
+# Worker that uses worker led authorization
+resource "aws_instance" "boundary_worker_wkr_led" {
+  ami                         = data.aws_ssm_parameter.al2023.value
+  associate_public_ip_address = true
+  instance_type               = "t3.micro"
+  iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
+  key_name                    = var.ec2_kepair_name
+  vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
+
+  # constrain to number of public subnets
+  subnet_id = module.vpc.public_subnet_ids[2]
+
+  user_data = templatefile("${path.module}/scripts/boundary-worker-wkr-led.sh", {
+  })
+
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "boundary-worker-wkr-led-${count.index}"
   }
 }
 
