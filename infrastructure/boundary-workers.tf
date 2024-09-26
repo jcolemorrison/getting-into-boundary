@@ -18,7 +18,7 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
   user_data_replace_on_change = true
 
   tags = {
-    Name = "boundary-worker-ctrl-led-${count.index}"
+    Name = "boundary-worker-ctrl-led"
   }
 }
 
@@ -41,7 +41,7 @@ resource "aws_instance" "boundary_worker_kms_led" {
   user_data_replace_on_change = true
 
   tags = {
-    Name = "boundary-worker-kms-led-${count.index}"
+    Name = "boundary-worker-kms-led"
   }
 }
 
@@ -63,7 +63,7 @@ resource "aws_instance" "boundary_worker_wkr_led" {
   user_data_replace_on_change = true
 
   tags = {
-    Name = "boundary-worker-wkr-led-${count.index}"
+    Name = "boundary-worker-wkr-led"
   }
 }
 
