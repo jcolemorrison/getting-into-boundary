@@ -1,4 +1,10 @@
 # Worker that uses controller led authorization
+resource "boundary_worker" "ctrl_led_worker" {
+  scope_id    = "global"
+  name        = "${var.project_name}-worker"
+  description = "self managed worker with controller led auth"
+}
+
 resource "aws_instance" "boundary_worker_ctrl_led" {
   # count = var.boundary_worker_count
 
@@ -13,6 +19,9 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
   subnet_id = module.vpc.public_subnet_ids[0]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-ctrl-led.sh", {
+    CONTROLLER_ADDRESSES                  = jsonencode(aws_instance.boundary_controller[*].private_ip)
+    CONTROLLER_GENERATED_ACTIVATION_TOKEN = boundary_worker.ctrl_led_worker.controller_generated_activation_token
+    WORKER_ID                             = boundary_worker.worker.id
   })
 
   user_data_replace_on_change = true
