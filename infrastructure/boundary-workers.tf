@@ -21,7 +21,7 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
   user_data = templatefile("${path.module}/scripts/boundary-worker-ctrl-led.sh", {
     CONTROLLER_ADDRESSES                  = jsonencode(aws_instance.boundary_controller[*].private_ip)
     CONTROLLER_GENERATED_ACTIVATION_TOKEN = boundary_worker.ctrl_led_worker.controller_generated_activation_token
-    WORKER_ID                             = boundary_worker.worker.id
+    WORKER_ID                             = boundary_worker.ctrl_led_worker.id
   })
 
   user_data_replace_on_change = true
