@@ -134,6 +134,18 @@ else
   exit $boundary_db_init
 fi
 
+# Run the command and capture the exit code
+boundary database migrate -config /etc/boundary.d/boundary.hcl
+boundary_db_migrate=$?
+
+# Check if the exit code is 0 or 2
+if [ $boundary_db_migrate -eq 0 ] || [ $boundary_db_migrate -eq 2 ]; then
+  echo "Command succeeded with exit code $boundary_db_migrate"
+else
+  echo "Command failed with exit code $boundary_db_migrate"
+  exit $boundary_db_migrate
+fi
+
 # Reload systemd manager configuration
 systemctl daemon-reload
 
