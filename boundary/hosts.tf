@@ -19,8 +19,8 @@ resource "boundary_host_catalog_plugin" "eks_nodes" {
 # Logic to grab the private IPs of the EKS nodes
 data "aws_instances" "boundary_eks_instances" {
   instance_tags = {
-    "eks:nodegroup-name" = var.eks_node_group_name
-    "eks:cluster-name"   = var.eks_cluster_name
+    "eks:nodegroup-name" = local.eks_node_group_name
+    "eks:cluster-name"   = local.eks_cluster_name
   }
 }
 
@@ -39,8 +39,8 @@ resource "boundary_host_set_plugin" "eks_nodes" {
   preferred_endpoints = [for _, ip in local.instance_private_ips : "cidr:${ip}/32"]
   attributes_json = jsonencode({
     filters = [
-      "tag:eks:nodegroup-name=${var.eks_node_group_name}",
-      "tag:eks:cluster-name=${var.eks_cluster_name}"
+      "tag:eks:nodegroup-name=${local.eks_node_group_name}",
+      "tag:eks:cluster-name=${local.eks_cluster_name}"
     ]
   })
 }
