@@ -8,7 +8,7 @@ resource "boundary_scope" "gib_org" {
 }
 
 resource "boundary_scope" "gib_project" {
-  scope_id                 = boundary_scope.hashistack_org.id
+  scope_id                 = boundary_scope.gib_org.id
   name                     = "getting-into-boundary"
   description              = "Getting into Boundary project scope"
   auto_create_default_role = true
