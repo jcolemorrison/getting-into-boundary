@@ -2,7 +2,7 @@
 resource "boundary_host_catalog_plugin" "eks_nodes" {
   name            = "${var.project_name}-catalog"
   description     = "${var.project_name} plugin for ${var.aws_default_region}"
-  scope_id        = "global"
+  scope_id        = boundary_scope.gib_project.id
   plugin_name     = "aws"
 
   attributes_json = jsonencode({ 
