@@ -5,6 +5,10 @@ resource "boundary_worker" "ctrl_led_worker" {
   description = "self managed worker with controller led auth"
 }
 
+data "aws_ssm_parameter" "al2023" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
+}
+
 resource "aws_instance" "boundary_worker_ctrl_led" {
   # count = var.boundary_worker_count
 
@@ -12,14 +16,14 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
   associate_public_ip_address = true
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
-  key_name                    = var.ec2_kepair_name
+  key_name                    = local.ec2_kepair_name
   vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
 
   # constrain to number of public subnets
   subnet_id = module.vpc.public_subnet_ids[0]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-ctrl-led.sh", {
-    CONTROLLER_ADDRESSES                  = jsonencode(aws_instance.boundary_controller[*].private_ip)
+    CONTROLLER_ADDRESSES                  = jsonencode(local.boundary_controller_private_ips)
     CONTROLLER_GENERATED_ACTIVATION_TOKEN = boundary_worker.ctrl_led_worker.controller_generated_activation_token
     WORKER_ID                             = boundary_worker.ctrl_led_worker.id
   })
@@ -37,15 +41,15 @@ resource "aws_instance" "boundary_worker_kms_led" {
   associate_public_ip_address = true
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
-  key_name                    = var.ec2_kepair_name
+  key_name                    = local.ec2_kepair_name
   vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
 
   # constrain to number of public subnets
   subnet_id = module.vpc.public_subnet_ids[1]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-kms-led.sh", {
-    CONTROLLER_ADDRESSES = jsonencode(aws_instance.boundary_controller[*].private_ip)
-    KMS_WORKER_AUTH_KEY_ID = aws_kms_key.boundary_worker_auth.id
+    CONTROLLER_ADDRESSES = jsonencode(local.boundary_controller_private_ips)
+    KMS_WORKER_AUTH_KEY_ID = local.boundary_worker_auth_key_id
   })
 
   user_data_replace_on_change = true
@@ -61,7 +65,7 @@ resource "aws_instance" "boundary_worker_wkr_led" {
   associate_public_ip_address = true
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
-  key_name                    = var.ec2_kepair_name
+  key_name                    = local.ec2_kepair_name
   vpc_security_group_ids      = [aws_security_group.boundary_worker.id]
 
   # constrain to number of public subnets

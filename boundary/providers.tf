@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.62.0"
     }
+    boundary = {
+      source  = "hashicorp/boundary"
+      version = "~> 1.1.15"
+    }
   }
 }
 
@@ -12,4 +16,10 @@ provider "aws" {
   default_tags {
     tags = var.aws_default_tags
   }
+}
+
+provider "boundary" {
+  addr                   = local.boundary_address
+  auth_method_login_name = local.boundary_login_name
+  auth_method_password   = local.boundary_login_pwd
 }
