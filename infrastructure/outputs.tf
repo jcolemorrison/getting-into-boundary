@@ -72,3 +72,8 @@ output "boundary_controller_private_ips" {
   description = "The private IP addresses of the Boundary controllers"
   value       = aws_instance.boundary_controller[*].private_ip
 }
+
+output "boundary_controller_lb_dns" {
+  description = "The public DNS name of the Boundary controller load balancer"
+  value       = aws_lb.boundary_controller.dns_name
+}
