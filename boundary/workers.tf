@@ -20,7 +20,7 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
   vpc_security_group_ids      = [local.boundary_worker_security_group_id]
 
   # constrain to number of public subnets
-  subnet_id = module.vpc.public_subnet_ids[0]
+  subnet_id = local.public_subnet_ids[0]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-ctrl-led.sh", {
     CONTROLLER_ADDRESSES                  = jsonencode(local.boundary_controller_private_ips)
@@ -45,7 +45,7 @@ resource "aws_instance" "boundary_worker_kms_led" {
   vpc_security_group_ids      = [local.boundary_worker_security_group_id]
 
   # constrain to number of public subnets
-  subnet_id = module.vpc.public_subnet_ids[1]
+  subnet_id = local.public_subnet_ids[1]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-kms-led.sh", {
     CONTROLLER_ADDRESSES = jsonencode(local.boundary_controller_private_ips)
@@ -69,7 +69,7 @@ resource "aws_instance" "boundary_worker_wkr_led" {
   vpc_security_group_ids      = [local.boundary_worker_security_group_id]
 
   # constrain to number of public subnets
-  subnet_id = module.vpc.public_subnet_ids[2]
+  subnet_id = local.public_subnet_ids[2]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-wkr-led.sh", {
   })

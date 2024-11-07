@@ -23,6 +23,18 @@ variable "ec2_kepair_name" {
   description = "The name of the EC2 key pair to use for remote access."
 }
 
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "List of VPC public subnet IDs."
+  default = null
+}
+
+variable "private_subnet_ids" {
+  type        = list(string)
+  description = "List of VPC private subnet IDs."
+  default = null
+}
+
 variable "boundary_address" {
   type        = string
   description = "The address of the Boundary cluster endpoint."
