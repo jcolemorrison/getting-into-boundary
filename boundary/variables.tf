@@ -35,6 +35,18 @@ variable "private_subnet_ids" {
   default = null
 }
 
+variable "eks_node_group_name" {
+  type        = string
+  description = "The name of the EKS node group"
+  default = null
+}
+
+variable "eks_cluster_name" {
+  type        = string
+  description = "The name of the EKS cluster"
+  default = null
+}
+
 variable "boundary_address" {
   type        = string
   description = "The address of the Boundary cluster endpoint."
@@ -94,6 +106,18 @@ variable "boundary_worker_security_group_id" {
   type        = string
   description = "The ID of the security group for the Boundary workers."
   default = null
+}
+
+variable "boundary_iam_user_access_key_id" {
+  description = "The access key ID for the Boundary IAM user"
+  type        = string
+  sensitive   = true
+}
+
+variable "boundary_iam_user_secret_access_key" {
+  description = "The secret access key for the Boundary IAM user"
+  type        = string
+  sensitive   = true
 }
 
 variable "hcp_terraform_organization_name" {

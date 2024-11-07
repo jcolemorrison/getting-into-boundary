@@ -9,4 +9,6 @@ locals {
   ec2_kepair_name = try(data.terraform_remote_state.infrastructure.outputs.ec2_kepair_name, var.ec2_kepair_name)
   public_subnet_ids = try(data.terraform_remote_state.infrastructure.outputs.public_subnet_ids, var.public_subnet_ids)
   private_subnet_ids = try(data.terraform_remote_state.infrastructure.outputs.private_subnet_ids, var.private_subnet_ids)
+  eks_node_group_name = try(data.terraform_remote_state.infrastructure.outputs.eks_node_group_name, var.eks_node_group_name)
+  eks_cluster_name = try(data.terraform_remote_state.infrastructure.outputs.eks_cluster_name, var.eks_cluster_name)
 }
