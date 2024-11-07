@@ -74,6 +74,6 @@ output "boundary_controller_private_ips" {
 }
 
 output "boundary_controller_lb_dns" {
-  description = "The public DNS name of the Boundary controller load balancer"
+  description = "The public DNS name of the Boundary controller load balancer.  This is the boundary address used in other workspaces."
   value       = aws_lb.boundary_controller.dns_name
 }
