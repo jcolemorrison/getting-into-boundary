@@ -1,5 +1,5 @@
 output "vpc_id" {
-  value       = module.vpc.vpc_id
+  value       = module.vpc.id
   description = "ID of the VPC"
 }
 
@@ -61,6 +61,11 @@ output "boundary_worker_auth_key_id" {
 output "boundary_worker_auth_key_arn" {
   description = "The ARN of the Boundary worker authentication KMS key"
   value       = aws_kms_key.boundary_worker_auth.arn
+}
+
+output "boundary_worker_security_group_id" {
+  description = "The ID of the security group for the Boundary workers"
+  value       = aws_security_group.boundary_worker.id
 }
 
 output "boundary_controller_private_ips" {

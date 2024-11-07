@@ -78,6 +78,12 @@ variable "boundary_worker_auth_key_arn" {
   default = null
 }
 
+variable "boundary_worker_security_group_id" {
+  type        = string
+  description = "The ID of the security group for the Boundary workers."
+  default = null
+}
+
 variable "hcp_terraform_organization_name" {
   type        = string
   description = "The name of the HCP Terraform organization."

@@ -5,5 +5,6 @@ locals {
   boundary_controller_private_ips = try(data.terraform_remote_state.infrastructure.outputs.boundary_controller_private_ips, var.boundary_controller_private_ips)
   boundary_worker_auth_key_id = try(data.terraform_remote_state.infrastructure.outputs.boundary_worker_auth_key_id, var.boundary_worker_auth_key_id)
   boundary_worker_auth_key_arn = try(data.terraform_remote_state.infrastructure.outputs.boundary_worker_auth_key_arn, var.boundary_worker_auth_key_arn)
+  boundary_worker_security_group_id = try(data.terraform_remote_state.infrastructure.outputs.boundary_worker_security_group_id, var.boundary_worker_security_group_id)
   ec2_kepair_name = try(data.terraform_remote_state.infrastructure.outputs.ec2_kepair_name, var.ec2_kepair_name)
 }
