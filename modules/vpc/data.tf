@@ -8,4 +8,9 @@ data "aws_availability_zones" "available" {
     name   = "region-name"
     values = [data.aws_region.current.name]
   }
+
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required", "opted-in"]
+  }
 }
