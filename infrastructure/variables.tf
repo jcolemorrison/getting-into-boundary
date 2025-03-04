@@ -90,3 +90,9 @@ variable "boundary_worker_allowed_cidr_blocks" {
   description = "CIDR blocks allowed to access the Boundary workers."
   default     = ["0.0.0.0/0"]
 }
+
+variable "boundary_ami" {
+  description = "The AMI ID to use for the Boundary controllers. If not specified, the a datasource AMI will be used."
+  type        = string
+  default     = "ami-063d43db0594b521b"
+}

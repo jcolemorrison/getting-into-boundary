@@ -5,7 +5,7 @@ data "aws_ssm_parameter" "al2023" {
 resource "aws_instance" "boundary_controller" {
   count = var.boundary_controller_count
 
-  ami                         = data.aws_ssm_parameter.al2023.value
+  ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = false
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_controller.name

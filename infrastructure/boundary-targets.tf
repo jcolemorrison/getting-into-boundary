@@ -1,7 +1,7 @@
 resource "aws_instance" "boundary_sample_target" {
   count = var.boundary_sample_target_count
 
-  ami                         = data.aws_ssm_parameter.al2023.value
+  ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = false
   instance_type               = "t3.micro"
   key_name                    = var.ec2_kepair_name
