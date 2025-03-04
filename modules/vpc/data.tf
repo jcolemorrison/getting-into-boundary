@@ -9,8 +9,13 @@ data "aws_availability_zones" "available" {
     values = [data.aws_region.current.name]
   }
 
+  # filter {
+  #   name   = "opt-in-status"
+  #   values = ["opt-in-not-required", "opted-in"]
+  # }
+
   filter {
-    name   = "opt-in-status"
-    values = ["opt-in-not-required", "opted-in"]
+    name   = "zone-type"
+    values = ["availability-zone"]
   }
 }
