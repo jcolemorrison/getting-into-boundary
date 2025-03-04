@@ -39,6 +39,17 @@ resource "aws_lb_listener" "boundary_controller_lb" {
   }
 }
 
+resource "aws_lb_listener" "boundary_controller_lb_logout" {
+  load_balancer_arn = aws_lb.boundary_controller.arn
+  port              = 3000
+  protocol          = "TCP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.boundary_controller.arn
+  }
+}
+
 resource "aws_security_group" "boundary_controller_lb" {
   vpc_id = module.vpc.id
   name   = "${var.project_name}-boundary-controller-lb"
@@ -50,6 +61,17 @@ resource "aws_security_group_rule" "boundary_controller_lb_allow_443" {
   protocol          = "tcp"
   from_port         = 9200
   to_port           = 9200
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+  description       = "Allow HTTPS traffic."
+}
+
+resource "aws_security_group_rule" "boundary_controller_lb_allow_443_logout" {
+  security_group_id = aws_security_group.boundary_controller_lb.id
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 3000
+  to_port           = 3000
   cidr_blocks       = ["0.0.0.0/0"]
   ipv6_cidr_blocks  = ["::/0"]
   description       = "Allow HTTPS traffic."

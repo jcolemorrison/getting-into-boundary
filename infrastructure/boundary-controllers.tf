@@ -49,6 +49,15 @@ resource "aws_security_group_rule" "allow_9200_boundary_controller" {
   security_group_id        = aws_security_group.boundary_controller.id
 }
 
+resource "aws_security_group_rule" "allow_3000_boundary_controller" {
+  type                     = "ingress"
+  from_port                = 3000
+  to_port                  = 3000
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.boundary_controller_lb.id
+  security_group_id        = aws_security_group.boundary_controller.id
+}
+
 resource "aws_security_group_rule" "allow_9203_boundary_controller_health" {
   type                     = "ingress"
   from_port                = 9203
