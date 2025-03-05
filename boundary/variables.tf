@@ -126,6 +126,12 @@ variable "boundary_ami" {
   default     = "ami-063d43db0594b521b"
 }
 
+variable "boundary_auth_method_id" {
+  description = "The Auth ID to use for the Boundary provider. If not specified, the default method will be used."
+  type        = string
+  default     = ""
+}
+
 variable "hcp_terraform_organization_name" {
   type        = string
   description = "The name of the HCP Terraform organization."
