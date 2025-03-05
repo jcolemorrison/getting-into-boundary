@@ -1,9 +1,9 @@
 # Worker that uses controller led authorization
-resource "boundary_worker" "ctrl_led_worker" {
-  scope_id    = "global"
-  name        = "${var.project_name}-worker"
-  description = "self managed worker with controller led auth"
-}
+# resource "boundary_worker" "ctrl_led_worker" {
+#   scope_id    = "global"
+#   name        = "${var.project_name}-worker"
+#   description = "self managed worker with controller led auth"
+# }
 
 data "aws_ssm_parameter" "al2023" {
   name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
