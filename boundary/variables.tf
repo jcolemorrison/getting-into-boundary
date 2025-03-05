@@ -120,6 +120,12 @@ variable "boundary_iam_user_secret_access_key" {
   sensitive   = true
 }
 
+variable "boundary_ami" {
+  description = "The AMI ID to use for the Boundary controllers. If not specified, the a datasource AMI will be used."
+  type        = string
+  default     = "ami-063d43db0594b521b"
+}
+
 variable "hcp_terraform_organization_name" {
   type        = string
   description = "The name of the HCP Terraform organization."

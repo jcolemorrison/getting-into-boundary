@@ -12,7 +12,7 @@ data "aws_ssm_parameter" "al2023" {
 resource "aws_instance" "boundary_worker_ctrl_led" {
   # count = var.boundary_worker_count
 
-  ami                         = data.aws_ssm_parameter.al2023.value
+  ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = true
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
@@ -37,7 +37,7 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
 
 # Worker that uses KMS led authorization
 resource "aws_instance" "boundary_worker_kms_led" {
-  ami                         = data.aws_ssm_parameter.al2023.value
+  ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = true
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
@@ -61,7 +61,7 @@ resource "aws_instance" "boundary_worker_kms_led" {
 
 # Worker that uses worker led authorization
 resource "aws_instance" "boundary_worker_wkr_led" {
-  ami                         = data.aws_ssm_parameter.al2023.value
+  ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = true
   instance_type               = "t3.micro"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
