@@ -40,6 +40,11 @@ EOF
 # Adding a system user and group
 useradd --system --user-group boundary || true
 
+# Ensure the directory exists and has the correct permissions
+mkdir -p "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
+chown boundary:boundary "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
+chmod 755 "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
+
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
