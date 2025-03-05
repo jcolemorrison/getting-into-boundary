@@ -10,9 +10,6 @@ TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-meta
 LOCAL_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/local-ipv4")
 PUBLIC_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/public-ipv4")
 
-# Ensure the file system is mounted as read-write
-sudo mount -o remount,rw /
-
 mkdir -p /etc/boundary.d
 
 # Boundary worker configuration
@@ -46,7 +43,7 @@ useradd --system --user-group boundary || true
 # Ensure the directory exists and has the correct permissions
 mkdir -p "/etc/boundary.d/ctrl-worker-${WORKER_ID}/nodecreds"
 chown -R boundary:boundary "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
-chmod -R 755 "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
+chmod -R 755 "/etc/boundary.d"
 
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
