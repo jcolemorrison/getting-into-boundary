@@ -25,7 +25,7 @@ resource "boundary_scope" "gib_project_foo" {
 
 resource "boundary_scope" "gib_project_bar" {
   scope_id                 = boundary_scope.gib_org.id
-  name                     = "getting-into-boundary"
+  name                     = "getting-into-boundary-bar"
   description              = "Getting into Boundary project scope bar"
   auto_create_default_role = true
   auto_create_admin_role   = true
