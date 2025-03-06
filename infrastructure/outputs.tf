@@ -82,3 +82,13 @@ output "boundary_controller_lb_dns" {
   description = "The public DNS name of the Boundary controller load balancer.  This is the boundary address used in other workspaces."
   value       = aws_lb.boundary_controller.dns_name
 }
+
+output "boundary_hosts_foo_private_ips" {
+  description = "The private IP addresses of the Boundary foo host instances"
+  value       = aws_instance.boundary_static_hosts_foo[*].private_ip
+}
+
+output "boundary_hosts_bar_private_ips" {
+  description = "The private IP addresses of the Boundary bar host instances"
+  value       = aws_instance.boundary_static_hosts_bar[*].private_ip
+}
