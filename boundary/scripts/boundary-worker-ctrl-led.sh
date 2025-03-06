@@ -11,6 +11,7 @@ LOCAL_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.2
 PUBLIC_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/public-ipv4")
 
 mkdir -p /etc/boundary.d
+mkdir -p /var/lib/boundary/worker/registration
 
 # Boundary worker configuration
 cat > /etc/boundary.d/boundary.hcl <<- EOF
@@ -31,7 +32,7 @@ worker {
     purpose = ["ec2", "eks"]
   }
 
-  auth_storage_path = "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
+  auth_storage_path = "/var/lib/boundary/worker"
 
   controller_generated_activation_token = "${CONTROLLER_GENERATED_ACTIVATION_TOKEN}"
 }
@@ -44,6 +45,10 @@ useradd --system --user-group boundary || true
 mkdir -p "/etc/boundary.d/ctrl-worker-${WORKER_ID}/nodecreds"
 chown -R boundary:boundary "/etc/boundary.d/ctrl-worker-${WORKER_ID}"
 chmod -R 755 "/etc/boundary.d"
+
+chown boundary:boundary -R /var/lib/boundary
+chgrp boundary /var/lib/boundary
+chmod -R g+rwx /var/lib/boundary
 
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
