@@ -62,7 +62,7 @@ resource "boundary_host_static" "foo" {
 
 resource "boundary_host_set_static" "foo" {
   name           = "${var.project_name}-static-foo"
-  host_catalog_id = boundary_host_catalog_static.example.id
+  host_catalog_id = boundary_host_catalog_static.foo.id
   host_ids        = boundary_host_static.foo[*].id
 }
 
@@ -82,6 +82,6 @@ resource "boundary_host_static" "bar" {
 
 resource "boundary_host_set_static" "bar" {
   name           = "${var.project_name}-static-bar"
-  host_catalog_id = boundary_host_catalog_static.example.id
+  host_catalog_id = boundary_host_catalog_static.bar.id
   host_ids        = boundary_host_static.bar[*].id
 }
