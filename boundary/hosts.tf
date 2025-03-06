@@ -44,3 +44,44 @@ resource "boundary_host_set_plugin" "eks_nodes" {
     ]
   })
 }
+
+# Static Hosts
+resource "boundary_host_catalog_static" "foo" {
+  name        = "${var.project_name}-static-catalog-foo"
+  description = "Static host catalog for foo project"
+  scope_id    = boundary_scope.gib_project_foo.id
+}
+
+resource "boundary_host_static" "foo" {
+  count           = length(local.boundary_hosts_foo_private_ips)
+  name            = "${var.project_name}-static-foo-${count.index}"
+  description     = "Static host for foo project"
+  address         = local.boundary_hosts_foo_private_ips[count.index]
+  host_catalog_id = boundary_host_catalog_static.foo.id
+}
+
+resource "boundary_host_set_static" "foo" {
+  name           = "${var.project_name}-static-foo"
+  host_catalog_id = boundary_host_catalog_static.example.id
+  host_ids        = boundary_host_static.foo[*].id
+}
+
+resource "boundary_host_catalog_static" "bar" {
+  name        = "${var.project_name}-static-catalog-bar"
+  description = "Static host catalog for bar project"
+  scope_id    = boundary_scope.gib_project_bar.id
+}
+
+resource "boundary_host_static" "bar" {
+  count           = length(local.boundary_hosts_bar_private_ips)
+  name            = "${var.project_name}-static-bar-${count.index}"
+  description     = "Static host for bar project"
+  address         = local.boundary_hosts_bar_private_ips[count.index]
+  host_catalog_id = boundary_host_catalog_static.bar.id
+}
+
+resource "boundary_host_set_static" "bar" {
+  name           = "${var.project_name}-static-bar"
+  host_catalog_id = boundary_host_catalog_static.example.id
+  host_ids        = boundary_host_static.bar[*].id
+}

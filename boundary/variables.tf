@@ -90,6 +90,18 @@ variable "boundary_controller_private_ips" {
   default     = null
 }
 
+variable "boundary_hosts_foo_private_ips" {
+  type        = list(string)
+  description = "The private IP addresses of the Boundary foo static hosts."
+  default     = null
+}
+
+variable "boundary_hosts_bar_private_ips" {
+  type        = list(string)
+  description = "The private IP addresses of the Boundary bar static hosts."
+  default     = null
+}
+
 variable "boundary_worker_auth_key_id" {
   type        = string
   description = "The ID of the Boundary worker authentication KMS key."
