@@ -13,4 +13,11 @@ locals {
   private_subnet_ids = try(data.terraform_remote_state.infrastructure.outputs.private_subnet_ids, var.private_subnet_ids)
   eks_node_group_name = try(data.terraform_remote_state.infrastructure.outputs.eks_node_group_name, var.eks_node_group_name)
   eks_cluster_name = try(data.terraform_remote_state.infrastructure.outputs.eks_cluster_name, var.eks_cluster_name)
+  hcp_vault_public_endpoint = try(data.terraform_remote_state.infrastructure.outputs.hcp_vault_public_endpoint, var.hcp_vault_public_endpoint)
+  hcp_vault_namespace = try(data.terraform_remote_state.infrastructure.outputs.hcp_vault_namespace, var.hcp_vault_namespace)
+  hcp_vault_cluster_bootstrap_token = try(data.terraform_remote_state.infrastructure.outputs.hcp_vault_cluster_bootstrap_token, var.hcp_vault_cluster_bootstrap_token)
+  database_url = try(data.terraform_remote_state.infrastructure.outputs.database_url, var.database_url)
+  database_name = try(data.terraform_remote_state.infrastructure.outputs.database_name, var.database_name)
+  database_username = try(data.terraform_remote_state.infrastructure.outputs.database_username, var.database_username)
+  database_password = try(data.terraform_remote_state.infrastructure.outputs.database_password, var.database_password)
 }
