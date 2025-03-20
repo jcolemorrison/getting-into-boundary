@@ -24,6 +24,18 @@ variable "vpc_cidr_block" {
   default     = "10.0.0.0/16"
 }
 
+variable "tgw_cidr_block" {
+  type        = string
+  description = "Cidr block for the Transit Gateway."
+  default     = "10.9.0.0/22"
+}
+
+variable "hvn_cidr_block" {
+  type        = string
+  description = "Cidr block for the HCP HVN. Cannot overlap with any VPC CIDR block."
+  default     = "172.25.16.0/22"
+}
+
 variable "ec2_kepair_name" {
   type        = string
   description = "The name of the EC2 key pair to use for remote access."
