@@ -113,3 +113,20 @@ output "hcp_vault_namespace" {
   value       = hcp_vault_cluster.main.namespace
   description = "value of the namespace for the HCP Vault cluster"
 }
+
+output "database_url" {
+  value = aws_db_instance.database.address
+}
+
+output "database_name" {
+  value = aws_db_instance.database.db_name
+}
+
+output "database_username" {
+  value = aws_db_instance.database.username
+}
+
+output "database_password" {
+  value     = aws_db_instance.database.password
+  sensitive = true
+}
