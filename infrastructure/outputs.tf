@@ -92,3 +92,24 @@ output "boundary_hosts_bar_private_ips" {
   description = "The private IP addresses of the Boundary bar host instances"
   value       = aws_instance.boundary_static_hosts_bar[*].private_ip
 }
+
+output "hcp_vault_private_endpoint" {
+  value       = hcp_vault_cluster.main.vault_private_endpoint_url
+  description = "Private endpoint for the HCP Vault cluster"
+}
+
+output "hcp_vault_public_endpoint" {
+  value       = hcp_vault_cluster.main.vault_public_endpoint_url
+  description = "Public endpoint for the HCP Vault cluster"
+}
+
+output "hcp_vault_cluster_bootstrap_token" {
+  value       = hcp_vault_cluster_admin_token.bootstrap.token
+  description = "Bootstrap token for the HCP Vault cluster"
+  sensitive   = true
+}
+
+output "hcp_vault_namespace" {
+  value       = hcp_vault_cluster.main.namespace
+  description = "value of the namespace for the HCP Vault cluster"
+}
