@@ -32,3 +32,8 @@ resource "hcp_hvn_route" "route" {
 resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "main" {
   transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.main_tgw.provider_transit_gateway_attachment_id
 }
+
+import {
+  to = aws_ec2_transit_gateway_vpc_attachment_accepter.main
+  id = "tgw-attach-0910cf749c22cd261"
+}
