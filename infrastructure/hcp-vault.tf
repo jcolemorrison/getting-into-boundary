@@ -4,3 +4,7 @@ resource "hcp_vault_cluster" "main" {
   tier            = "plus_small"
   public_endpoint = true
 }
+
+resource "hcp_vault_cluster_admin_token" "bootstrap" {
+  cluster_id = hcp_vault_cluster.main.cluster_id
+}
