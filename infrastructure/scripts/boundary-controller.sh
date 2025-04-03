@@ -118,45 +118,27 @@ events {
   sysevents_enabled = true
   telemetry_enabled = true
   audit_enabled = true
+  
+  sink "stderr" {
+    name        = "all-events"
+    description = "All events sent to stderr"
+    event_types = ["*"]
+    format      = "cloudevents-text"
+  }
 
   sink {
-    name = "obs-sink"
-    description = "Observations sent to a file"
-    event_types = ["observation"]
-    format = "cloudevents-text"
-    file {
-      path = "/var/log/boundary"
-      file_name = "obs.log"
-    }
-  }
-  sink {
-    name = "audit-sink"
+    name        = "controller-audit-sink"
     description = "Audit sent to a file"
     event_types = ["audit"]
-    format = "cloudevents-text"
+    format      = "cloudevents-json"
+
+    deny_filters = [
+      "\"/data/request_info/method\" contains \"ServerCoordinationService\""
+    ]
+
     file {
-      path = "/var/log/boundary"
+      path      = "/var/log/boundary"
       file_name = "audit.log"
-    }
-  }
-  sink {
-    name = "sysevents-sink"
-    description = "Sysevents sent to a file"
-    event_types = ["system","error"]
-    format = "cloudevents-text"
-    file {
-      path = "/var/log/boundary"
-      file_name = "sysevents.log"
-    }
-  }
-  sink {
-    name = "telemetry-sink"
-    description = "Telemetry sent to a file"
-    event_types = ["telemetry", "observation"]
-    format = "cloudevents-text"
-    file {
-      path = "/var/log/boundary"
-      file_name = "telemetry.log"
     }
   }
 }
@@ -174,6 +156,13 @@ chmod 755 /var/log/boundary
 touch /var/log/boundary/obs.log
 touch /var/log/boundary/sysevents.log
 chown boundary:boundary /var/log/boundary/*.logs
+
+mkfs -t xfs /dev/nvme1n1
+mkdir -p /var/log/boundary
+mount /dev/nvme1n1 /var/log/boundary
+
+chgrp boundary /var/log/boundary
+chmod g+rwx /var/log/boundary
 
 export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:$${ENCODED_DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
 
