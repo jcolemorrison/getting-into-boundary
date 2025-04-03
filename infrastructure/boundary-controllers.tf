@@ -7,7 +7,7 @@ resource "aws_instance" "boundary_controller" {
 
   ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = false
-  instance_type               = "r8g.medium"
+  instance_type               = "r7i.large"
   iam_instance_profile        = aws_iam_instance_profile.boundary_controller.name
   key_name                    = var.ec2_kepair_name
   vpc_security_group_ids      = [aws_security_group.boundary_controller.id]
