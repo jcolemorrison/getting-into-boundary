@@ -169,6 +169,7 @@ useradd --system --user-group boundary || true
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
 chown boundary:boundary /var/log/boundary
+chmod 755 /var/log/boundary
 
 export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:$${ENCODED_DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
 
