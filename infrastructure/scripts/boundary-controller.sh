@@ -123,7 +123,7 @@ events {
     name        = "all-events"
     description = "All events sent to stderr"
     event_types = ["*"]
-    format      = "cloudevents-text"
+    format      = "hclog-text"
   }
 
   sink {
