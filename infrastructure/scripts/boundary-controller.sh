@@ -151,6 +151,10 @@ chown boundary:boundary /usr/bin/boundary
 chown boundary:boundary /var/log/boundary
 chmod 755 /var/log/boundary
 
+touch /var/log/boundary/obs.log
+touch /var/log/boundary/sysevents.log
+chown boundary:boundary /var/log/boundary/*.logs
+
 export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:$${ENCODED_DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
 
 # Run the command and capture the exit code
