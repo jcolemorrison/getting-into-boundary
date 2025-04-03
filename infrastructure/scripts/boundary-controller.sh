@@ -151,7 +151,7 @@ events {
   sink {
     name = "telemetry-sink"
     description = "Telemetry sent to a file"
-    event_types = ["telemetry"]
+    event_types = ["telemetry", "observation"]
     format = "cloudevents-text"
     file {
       path = "/var/log/boundary"
