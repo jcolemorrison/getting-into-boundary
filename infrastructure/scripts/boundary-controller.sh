@@ -116,7 +116,8 @@ kms "awskms" {
 events {
   observations_enabled = true
   sysevents_enabled = true
-  telemetry_enabled = false
+  telemetry_enabled = true
+  audit_enabled = true
 
   sink {
     name = "obs-sink"
@@ -141,7 +142,7 @@ events {
   sink {
     name = "sysevents-sink"
     description = "Sysevents sent to a file"
-    event_types = ["system"]
+    event_types = ["system", "error"]
     format = "cloudevents-text"
     file {
       path = "/var/log/boundary"
