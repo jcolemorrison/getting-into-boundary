@@ -141,7 +141,7 @@ events {
   sink {
     name = "sysevents-sink"
     description = "Sysevents sent to a file"
-    event_types = ["system","error"]
+    event_types = ["system"]
     format = "cloudevents-text"
     file {
       path = "/var/log/boundary"
