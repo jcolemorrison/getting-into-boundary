@@ -61,12 +61,12 @@ resource "aws_security_group" "boundary_static_host" {
 }
 
 resource "aws_security_group_rule" "allow_ssh_from_boundary_worker_to_static_host" {
-  type                     = "ingress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  cidr_blocks              = [var.remote_access_cidr_block]
-  security_group_id        = aws_security_group.boundary_static_host.id
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = [var.remote_access_cidr_block]
+  security_group_id = aws_security_group.boundary_static_host.id
 }
 
 resource "aws_security_group_rule" "allow_egress_boundary_static_host" {

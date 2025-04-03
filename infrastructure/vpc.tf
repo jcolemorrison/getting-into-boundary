@@ -16,7 +16,7 @@ resource "aws_route" "tgw_route_private" {
   route_table_id         = module.vpc.private_route_table_id
   transit_gateway_id     = aws_ec2_transit_gateway.main_tgw.id
 
-  depends_on = [ aws_ec2_transit_gateway_vpc_attachment.main ]
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.main]
 }
 
 resource "aws_route" "tgw_route_public" {
@@ -24,5 +24,5 @@ resource "aws_route" "tgw_route_public" {
   route_table_id         = module.vpc.public_route_table_id
   transit_gateway_id     = aws_ec2_transit_gateway.main_tgw.id
 
-  depends_on = [ aws_ec2_transit_gateway_vpc_attachment.main ]
+  depends_on = [aws_ec2_transit_gateway_vpc_attachment.main]
 }
