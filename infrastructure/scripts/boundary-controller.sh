@@ -14,6 +14,7 @@ ENCODED_DB_PASSWORD=$(echo -n "${DB_PASSWORD}" | jq -sRr @uri)
 
 # Create the Boundary configuration directory and TLS subdirectory
 mkdir -p /etc/boundary.d/tls
+mkdir -p /var/log/boundary
 
 # Write the server key and certificate to the appropriate files
 cat > /etc/boundary.d/tls/key.pem <<- EOF
@@ -111,6 +112,53 @@ kms "awskms" {
   region = "us-east-1"
   kms_key_id = "${KMS_RECOVERY_KEY_ID}"
 }
+
+events {
+  observations_enabled = true
+  sysevents_enabled = true
+  telemetry_enabled = false
+
+  sink {
+    name = "obs-sink"
+    description = "Observations sent to a file"
+    event_types = ["observation"]
+    format = "cloudevents-text"
+    file {
+      path = "/var/log/boundary"
+      file_name = "obs.log"
+    }
+  }
+  sink {
+    name = "audit-sink"
+    description = "Audit sent to a file"
+    event_types = ["audit"]
+    format = "cloudevents-text"
+    file {
+      path = "/var/log/boundary"
+      file_name = "audit.log"
+    }
+  }
+  sink {
+    name = "sysevents-sink"
+    description = "Sysevents sent to a file"
+    event_types = ["system","error"]
+    format = "cloudevents-text"
+    file {
+      path = "/var/log/boundary"
+      file_name = "sysevents.log"
+    }
+  }
+  sink {
+    name = "telemetry-sink"
+    description = "Telemetry sent to a file"
+    event_types = ["telemetry"]
+    format = "cloudevents-text"
+    file {
+      path = "/var/log/boundary"
+      file_name = "telemetry.log"
+    }
+  }
+}
 EOF
 
 # Adding a system user and group
@@ -119,6 +167,7 @@ useradd --system --user-group boundary || true
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
+chown boundary:boundary /var/log/boundary
 
 export BOUNDARY_DB_CONNECTION="postgresql://${DB_USERNAME}:$${ENCODED_DB_PASSWORD}@${DB_ENDPOINT}/${DB_NAME}"
 
