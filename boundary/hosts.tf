@@ -1,11 +1,11 @@
 # Dynamic Host Catalog - setup with credentials to access AWS and find EKS nodes
 resource "boundary_host_catalog_plugin" "eks_nodes" {
-  name            = "${var.project_name}-catalog"
-  description     = "${var.project_name} plugin for ${var.aws_default_region}"
-  scope_id        = boundary_scope.gib_project.id
-  plugin_name     = "aws"
+  name        = "${var.project_name}-catalog"
+  description = "${var.project_name} plugin for ${var.aws_default_region}"
+  scope_id    = boundary_scope.gib_project.id
+  plugin_name = "aws"
 
-  attributes_json = jsonencode({ 
+  attributes_json = jsonencode({
     region                      = var.aws_default_region
     disable_credential_rotation = true
   })
@@ -25,7 +25,7 @@ data "aws_instances" "boundary_eks_instances" {
 }
 
 data "aws_instance" "boundary_eks_instance" {
-  for_each = toset(data.aws_instances.boundary_eks_instances.ids)
+  for_each    = toset(data.aws_instances.boundary_eks_instances.ids)
   instance_id = each.key
 }
 
@@ -34,8 +34,8 @@ locals {
 }
 
 resource "boundary_host_set_plugin" "eks_nodes" {
-  name            = "${var.project_name}-eks-nodes"
-  host_catalog_id = boundary_host_catalog_plugin.eks_nodes.id
+  name                = "${var.project_name}-eks-nodes"
+  host_catalog_id     = boundary_host_catalog_plugin.eks_nodes.id
   preferred_endpoints = [for _, ip in local.instance_private_ips : "cidr:${ip}/32"]
   attributes_json = jsonencode({
     filters = [
@@ -61,7 +61,7 @@ resource "boundary_host_static" "foo" {
 }
 
 resource "boundary_host_set_static" "foo" {
-  name           = "${var.project_name}-static-foo"
+  name            = "${var.project_name}-static-foo"
   host_catalog_id = boundary_host_catalog_static.foo.id
   host_ids        = boundary_host_static.foo[*].id
 }
@@ -81,7 +81,7 @@ resource "boundary_host_static" "bar" {
 }
 
 resource "boundary_host_set_static" "bar" {
-  name           = "${var.project_name}-static-bar"
+  name            = "${var.project_name}-static-bar"
   host_catalog_id = boundary_host_catalog_static.bar.id
   host_ids        = boundary_host_static.bar[*].id
 }

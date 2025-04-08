@@ -26,25 +26,25 @@ variable "ec2_kepair_name" {
 variable "public_subnet_ids" {
   type        = list(string)
   description = "List of VPC public subnet IDs."
-  default = null
+  default     = null
 }
 
 variable "private_subnet_ids" {
   type        = list(string)
   description = "List of VPC private subnet IDs."
-  default = null
+  default     = null
 }
 
 variable "eks_node_group_name" {
   type        = string
   description = "The name of the EKS node group"
-  default = null
+  default     = null
 }
 
 variable "eks_cluster_name" {
   type        = string
   description = "The name of the EKS cluster"
-  default = null
+  default     = null
 }
 
 variable "boundary_address" {
@@ -105,19 +105,19 @@ variable "boundary_hosts_bar_private_ips" {
 variable "boundary_worker_auth_key_id" {
   type        = string
   description = "The ID of the Boundary worker authentication KMS key."
-  default = null
+  default     = null
 }
 
 variable "boundary_worker_auth_key_arn" {
   type        = string
   description = "The ARN of the Boundary worker authentication KMS key."
-  default = null
+  default     = null
 }
 
 variable "boundary_worker_security_group_id" {
   type        = string
   description = "The ID of the security group for the Boundary workers."
-  default = null
+  default     = null
 }
 
 variable "boundary_iam_user_access_key_id" {

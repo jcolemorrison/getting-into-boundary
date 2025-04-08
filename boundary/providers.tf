@@ -26,8 +26,8 @@ provider "boundary" {
   addr                   = "https://${local.boundary_address}:9200"
   auth_method_login_name = local.boundary_login_name
   auth_method_password   = local.boundary_login_pwd
-  auth_method_id         = var.boundary_auth_method_id 
-  tls_insecure = true
+  auth_method_id         = var.boundary_auth_method_id
+  tls_insecure           = true
 }
 
 provider "vault" {

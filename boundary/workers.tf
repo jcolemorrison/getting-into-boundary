@@ -48,7 +48,7 @@ resource "aws_instance" "boundary_worker_kms_led" {
   subnet_id = local.public_subnet_ids[1]
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-kms-led.sh", {
-    CONTROLLER_ADDRESSES = jsonencode(local.boundary_controller_private_ips)
+    CONTROLLER_ADDRESSES   = jsonencode(local.boundary_controller_private_ips)
     KMS_WORKER_AUTH_KEY_ID = local.boundary_worker_auth_key_id
   })
 
