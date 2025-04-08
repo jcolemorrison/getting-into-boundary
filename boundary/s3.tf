@@ -64,3 +64,8 @@ resource "aws_iam_policy" "boundary_session_recording" {
   description = "Policy for Boundary session recording bucket"
   policy      = data.aws_iam_policy_document.boundary_session_recording.json
 }
+
+resource "aws_iam_role_policy_attachment" "boundary_session_recording" {
+  role       = aws_iam_role.boundary_worker.name
+  policy_arn = aws_iam_policy.boundary_session_recording.arn
+}
