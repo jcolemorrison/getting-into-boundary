@@ -8,8 +8,32 @@ yum -y install boundary-enterprise
 # Get token for fetching metadata and local ipv4
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 LOCAL_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/local-ipv4")
+PUBLIC_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/public-ipv4")
 
 mkdir -p /etc/boundary.d
+
+# Boundary worker configuration
+cat > /etc/boundary.d/boundary.hcl <<- EOF
+disable_mlock = true
+
+hcp_boundary_cluster_id = "${HCP_BOUNDARY_CLUSTER_ID}"
+
+listener "tcp" {
+  address = "0.0.0.0:9202"
+  purpose = "proxy"
+}
+
+worker {
+  public_addr = "$${PUBLIC_IPV4}"
+  
+  recording_storage_path = "/var/log/boundary"
+
+  tags {
+    type = ["hcp"]
+    purpose = ["ec2"]
+  }
+}
+EOF
 
 # Adding a system user and group
 useradd --system --user-group boundary || true

@@ -33,7 +33,7 @@ resource "boundary_host_static" "hcp" {
   name            = "${var.project_name}-static-${count.index}"
   description     = "Static host for HCP Boundary project"
   address         = local.boundary_hosts_foo_private_ips[count.index]
-  host_catalog_id = boundary_host_catalog_static.foo.id
+  host_catalog_id = boundary_host_catalog_static.hcp.id
 }
 
 resource "boundary_host_set_static" "hcp" {
