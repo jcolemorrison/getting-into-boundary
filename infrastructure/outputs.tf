@@ -130,3 +130,16 @@ output "database_password" {
   value     = aws_db_instance.database.password
   sensitive = true
 }
+
+output "hcp_boundary_endpoint" {
+  value = hcp_boundary_cluster.main.cluster_url
+}
+
+output "hcp_boundary_username" {
+  value = hcp_boundary_cluster.main.username
+}
+
+output "hcp_boundary_password" {
+  value     = hcp_boundary_cluster.main.password
+  sensitive = true
+}

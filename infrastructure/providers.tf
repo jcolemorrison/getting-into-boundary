@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.6.2"
     }
+    hcp = {
+      source  = "hashicorp/hcp"
+      version = "~> 0.104.0"
+    }
   }
 }
 
@@ -19,3 +23,5 @@ provider "aws" {
 }
 
 provider "random" {}
+
+provider "hcp" {}
