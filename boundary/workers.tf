@@ -127,7 +127,7 @@ resource "aws_instance" "boundary_worker_wkr_led" {
 resource "aws_instance" "boundary_worker_hcp" {
   ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
   associate_public_ip_address = true
-  instance_type               = "t3.micro"
+  instance_type               = "r7i.large"
   iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
   key_name                    = local.ec2_kepair_name
   vpc_security_group_ids      = [local.boundary_worker_security_group_id]
@@ -150,7 +150,7 @@ resource "aws_instance" "boundary_worker_hcp" {
   }
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-hcp.sh", {
-    HCP_BOUNDARY_CLUSTER_ID = split(".", replace(local.boundary_address, "https://", "")).0
+    HCP_BOUNDARY_CLUSTER_ID = split(".", replace(local.hcp_boundary_address, "https://", "")).0
   })
 
   user_data_replace_on_change = true

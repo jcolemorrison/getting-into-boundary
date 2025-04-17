@@ -11,6 +11,7 @@ LOCAL_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.2
 PUBLIC_IPV4=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s "http://169.254.169.254/latest/meta-data/public-ipv4")
 
 mkdir -p /etc/boundary.d
+mkdir -p /etc/boundary.d/worker
 
 # Boundary worker configuration
 cat > /etc/boundary.d/boundary.hcl <<- EOF
@@ -25,6 +26,8 @@ listener "tcp" {
 
 worker {
   public_addr = "$${PUBLIC_IPV4}"
+
+  auth_storage_path = "/etc/boundary.d/worker"
   
   recording_storage_path = "/var/log/boundary"
 
