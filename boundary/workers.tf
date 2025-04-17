@@ -22,6 +22,20 @@ resource "aws_instance" "boundary_worker_ctrl_led" {
   # constrain to number of public subnets
   subnet_id = local.public_subnet_ids[0]
 
+  ebs_block_device {
+    delete_on_termination = true
+    device_name           = "/dev/sdf"
+    encrypted             = false
+
+    tags = {
+      Name    = "boundary-worker-ctrl-led"
+      Purpose = "boundary-session-recordings"
+    }
+
+    volume_size = 32
+    volume_type = "gp2"
+  }
+
   user_data = templatefile("${path.module}/scripts/boundary-worker-ctrl-led.sh", {
     CONTROLLER_ADDRESSES                  = jsonencode(local.boundary_controller_private_ips)
     CONTROLLER_GENERATED_ACTIVATION_TOKEN = boundary_worker.ctrl_led_worker.controller_generated_activation_token
@@ -47,6 +61,20 @@ resource "aws_instance" "boundary_worker_kms_led" {
   # constrain to number of public subnets
   subnet_id = local.public_subnet_ids[1]
 
+  ebs_block_device {
+    delete_on_termination = true
+    device_name           = "/dev/sdf"
+    encrypted             = false
+
+    tags = {
+      Name    = "boundary-worker-kms-led"
+      Purpose = "boundary-session-recordings"
+    }
+
+    volume_size = 32
+    volume_type = "gp2"
+  }
+
   user_data = templatefile("${path.module}/scripts/boundary-worker-kms-led.sh", {
     CONTROLLER_ADDRESSES   = jsonencode(local.boundary_controller_private_ips)
     KMS_WORKER_AUTH_KEY_ID = local.boundary_worker_auth_key_id
@@ -70,6 +98,20 @@ resource "aws_instance" "boundary_worker_wkr_led" {
 
   # constrain to number of public subnets
   subnet_id = local.public_subnet_ids[2]
+
+  ebs_block_device {
+    delete_on_termination = true
+    device_name           = "/dev/sdf"
+    encrypted             = false
+
+    tags = {
+      Name    = "boundary-worker-wkr-led"
+      Purpose = "boundary-session-recordings"
+    }
+
+    volume_size = 32
+    volume_type = "gp2"
+  }
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-wkr-led.sh", {
   })

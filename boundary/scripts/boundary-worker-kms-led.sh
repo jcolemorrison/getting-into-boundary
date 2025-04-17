@@ -30,6 +30,9 @@ worker {
 
   initial_upstreams = ${CONTROLLER_ADDRESSES}
 
+  recording_storage_path = "/var/log/boundary"
+  recording_storage_minimum_available_capacity = "500MB"
+
   tags {
     type = ["kms-led"]
     purpose = ["ec2"]
@@ -50,6 +53,14 @@ useradd --system --user-group boundary || true
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
+chown boundary:boundary /var/log/boundary
+
+mkfs -t xfs /dev/nvme1n1
+mkdir -p /var/log/boundary
+mount /dev/nvme1n1 /var/log/boundary
+
+chgrp boundary /var/log/boundary
+chmod g+rwx /var/log/boundary
 
 # Reload systemd manager configuration
 systemctl daemon-reload

@@ -53,6 +53,14 @@ chmod -R g+rwx /var/lib/boundary
 # Changing ownership of directories and files
 chown boundary:boundary -R /etc/boundary.d
 chown boundary:boundary /usr/bin/boundary
+chown boundary:boundary /var/log/boundary
+
+mkfs -t xfs /dev/nvme1n1
+mkdir -p /var/log/boundary
+mount /dev/nvme1n1 /var/log/boundary
+
+chgrp boundary /var/log/boundary
+chmod g+rwx /var/log/boundary
 
 # Reload systemd manager configuration
 systemctl daemon-reload
