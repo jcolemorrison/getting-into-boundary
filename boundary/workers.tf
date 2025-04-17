@@ -150,7 +150,7 @@ resource "aws_instance" "boundary_worker_hcp" {
   }
 
   user_data = templatefile("${path.module}/scripts/boundary-worker-hcp.sh", {
-    HCP_BOUNDARY_CLUSTER_ID = split(replace(local.boundary_address, "https://", ""), ".").0
+    HCP_BOUNDARY_CLUSTER_ID = split(".", replace(local.boundary_address, "https://", "")).0
   })
 
   user_data_replace_on_change = true
