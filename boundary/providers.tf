@@ -35,3 +35,11 @@ provider "vault" {
   token     = local.hcp_vault_cluster_bootstrap_token
   namespace = local.hcp_vault_namespace
 }
+
+provider "boundary" {
+  alias                  = "hcp"
+  addr                   = local.hcp_boundary_address
+  auth_method_login_name = local.hcp_boundary_username
+  auth_method_password   = local.hcp_boundary_password
+  scope_id               = "global"
+}

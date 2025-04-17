@@ -20,4 +20,7 @@ locals {
   database_name                     = try(data.terraform_remote_state.infrastructure.outputs.database_name, var.database_name)
   database_username                 = try(data.terraform_remote_state.infrastructure.outputs.database_username, var.database_username)
   database_password                 = try(data.terraform_remote_state.infrastructure.outputs.database_password, var.database_password)
+  hcp_boundary_address              = data.terraform_remote_state.infrastructure.outputs.hcp_boundary_endpoint
+  hcp_boundary_username             = data.terraform_remote_state.infrastructure.outputs.hcp_boundary_username
+  hcp_boundary_password             = data.terraform_remote_state.infrastructure.outputs.hcp_boundary_password
 }
