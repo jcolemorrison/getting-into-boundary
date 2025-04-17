@@ -1,6 +1,17 @@
-resource "boundary_scope" "hcp" {
-  provider                 = boundary.hcp
+resource "boundary_scope" "hcp_org" {
+  provider = boundary.hcp
+
   scope_id                 = "global"
+  name                     = "getting-into-hcp-boundary"
+  description              = "Getting into HCP Boundary organization scope"
+  auto_create_default_role = true
+  auto_create_admin_role   = true
+}
+
+resource "boundary_scope" "hcp_project" {
+  provider = boundary.hcp
+
+  scope_id                 = boundary_scope.hcp_org.id
   name                     = "getting-into-hcp-boundary"
   description              = "Getting into HCP Boundary project scope"
   auto_create_default_role = true
@@ -12,7 +23,7 @@ resource "boundary_host_catalog_static" "hcp" {
 
   name        = "${var.project_name}-static-catalog"
   description = "Static host catalog for HCP Boundary project"
-  scope_id    = boundary_scope.hcp.id
+  scope_id    = boundary_scope.hcp_project.id
 }
 
 resource "boundary_host_static" "hcp" {
@@ -40,6 +51,6 @@ resource "boundary_target" "hcp" {
   description     = "Targets for the static hosts in the HCP Boundary project"
   type            = "tcp"
   default_port    = "22"
-  scope_id        = boundary_scope.hcp.id
+  scope_id        = boundary_scope.hcp_project.id
   host_source_ids = [boundary_host_set_static.hcp.id]
 }
