@@ -122,3 +122,39 @@ resource "aws_instance" "boundary_worker_wkr_led" {
     Name = "boundary-worker-wkr-led"
   }
 }
+
+# Worker that connects to HCP Boundary
+resource "aws_instance" "boundary_worker_hcp" {
+  ami                         = var.boundary_ami != "" ? var.boundary_ami : data.aws_ssm_parameter.al2023.value
+  associate_public_ip_address = true
+  instance_type               = "t3.micro"
+  iam_instance_profile        = aws_iam_instance_profile.boundary_worker_profile.name
+  key_name                    = local.ec2_kepair_name
+  vpc_security_group_ids      = [local.boundary_worker_security_group_id]
+
+  # constrain to number of public subnets
+  subnet_id = local.public_subnet_ids[0]
+
+  ebs_block_device {
+    delete_on_termination = true
+    device_name           = "/dev/sdf"
+    encrypted             = false
+
+    tags = {
+      Name    = "boundary-worker-hcp"
+      Purpose = "boundary-session-recordings"
+    }
+
+    volume_size = 32
+    volume_type = "gp2"
+  }
+
+  user_data = templatefile("${path.module}/scripts/boundary-worker-hcp.sh", {
+  })
+
+  user_data_replace_on_change = true
+
+  tags = {
+    Name = "boundary-worker-hcp"
+  }
+}
